@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What Your Brain Builds</title>
+<meta name="description" content="Five quick questions about your business, and what a brain would build for you first.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* One phone column: a dark photo hero, then a cream answer sheet that turns one question at a time. Single committed look. */
+:root{
+  --ink:#0e0d0b; --ink-2:#17150f; --line-dark:#2a2721;
+  --paper:#f6f1e8; --paper-2:#ece5d8; --line:#d7d0c4; --card:#fffdf8;
+  --text:#f1ece3; --text-soft:#cfc7bb; --text-mute:#8f877a;
+  --dark:#0e0d0b; --dark-soft:#3b362e; --dark-mute:#6f685d;
+  --sky:#7fcdf6; --sea:#2a6f92; --sea-deep:#1f5673; --sea-wash:#e6f0f4;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'Manrope','Segoe UI',system-ui,sans-serif;
+  --mono:ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--ink);color:var(--text)}
+body{margin:0;font-family:var(--sans);-webkit-font-smoothing:antialiased}
+.page{width:100%;max-width:430px;margin:0 auto;display:flex;flex-direction:column}
+.serif{font-family:var(--serif);font-weight:400;letter-spacing:-0.01em}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+a{color:var(--sky)}
+
+/* hero */
+.hero{position:relative;min-height:440px;overflow:hidden;background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;padding:250px 24px 26px}
+.hero img{position:absolute;inset:0 0 auto 0;width:100%;height:360px;object-fit:cover;object-position:50% 30%}
+.hero .fade{position:absolute;left:0;right:0;top:160px;height:280px;background:linear-gradient(180deg,rgba(14,13,11,0) 0%,rgba(14,13,11,.92) 45%,var(--ink) 100%)}
+.hero-text{position:relative;display:flex;flex-direction:column;gap:12px}
+.hero .eyebrow{color:var(--sky)}
+.hero h1{margin:0;font-size:44px;line-height:1.02;color:var(--paper);text-wrap:balance}
+.hero p{margin:0;font-size:17px;line-height:1.5;color:var(--text-soft);text-wrap:pretty}
+
+/* sheet */
+.sheet{background:var(--paper);color:var(--dark);padding:28px 24px 36px;display:flex;flex-direction:column;gap:22px;min-height:560px}
+.progress{display:flex;flex-direction:column;gap:10px}
+.progress .row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.progress .count{font-size:13px;font-weight:700;color:var(--sea);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.bar{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.bar span{height:4px;border-radius:2px;background:var(--line)}
+.bar span.on{background:var(--sea)}
+.back{font:600 14px var(--sans);color:var(--dark-soft);min-height:44px;padding:10px 12px;margin-right:-12px;border:0;background:none;cursor:pointer}
+.step{display:flex;flex-direction:column;gap:18px}
+.step h2{margin:0;font-size:34px;line-height:1.08;color:var(--dark);text-wrap:balance}
+.hint{margin:-6px 0 0;font-size:15px;line-height:1.5;color:var(--dark-mute)}
+.group-label{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dark-mute);margin-top:4px}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;min-height:56px;padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--dark);font:600 16px/1.35 var(--sans);text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.opt small{display:block;font-weight:500;font-size:13px;color:var(--dark-mute);margin-top:2px}
+.opt .mark{flex:none;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center}
+.opt.multi .mark{border-radius:6px}
+.opt[aria-pressed="true"]{border-color:var(--sea);background:var(--sea-wash)}
+.opt[aria-pressed="true"] .mark{background:var(--sea);border-color:var(--sea)}
+.opt[aria-pressed="true"] .mark::after{content:"";width:8px;height:8px;border-radius:2px;background:#fff}
+.opt:focus-visible,.cta:focus-visible,.back:focus-visible,.ghost:focus-visible,.copy-btn:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills .opt{width:auto;min-height:44px;padding:10px 14px;border-radius:999px;font-size:15px}
+.pills .opt .mark{display:none}
+.pills .opt[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
+.cta{display:flex;align-items:center;justify-content:center;min-height:56px;width:100%;border-radius:999px;border:0;background:var(--sea);color:#fff;font:700 17px var(--sans);text-decoration:none;cursor:pointer}
+.cta:hover{background:var(--sea-deep)}
+.cta:disabled{background:var(--line);color:var(--dark-mute);cursor:default}
+.ghost{align-self:center;border:0;background:none;color:var(--dark-soft);font:600 14px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:44px;padding:12px 16px}
+
+/* result */
+.result h2{margin:0;font-size:36px;line-height:1.05;text-wrap:balance}
+.result h2.part{margin:10px 0 0;font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.1;color:var(--dark)}
+.cards{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--ink);color:var(--text);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.card .n{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sky)}
+.card h3{margin:0;font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.1;color:var(--paper)}
+.card p{margin:0;font-size:15px;line-height:1.5;color:var(--text-soft)}
+.card .how{padding-top:8px;border-top:1px solid var(--line-dark)}
+.card .how b{color:var(--paper);font-weight:700}
+.card .ex{font-size:13px;color:var(--text-mute)}
+.later,.para{margin:0;font-size:15px;line-height:1.55;color:var(--dark-soft)}
+.para b{color:var(--dark)}
+.steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:30px 1fr;gap:12px;font-size:15px;line-height:1.5;color:var(--dark-soft);counter-increment:s}
+.steps li::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--sea);color:#fff;font:700 14px var(--sans);display:grid;place-items:center}
+.steps li span{min-width:0}
+.msg-box{background:var(--card);border:1.5px dashed var(--sea);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.msg-box .lbl{font-size:13px;line-height:1.45;color:var(--dark-soft)}
+.msg{margin:0;white-space:pre-wrap;overflow-wrap:break-word;font:500 15px/1.5 var(--sans);color:var(--dark);user-select:all}
+.msg .ref{font:600 12px var(--mono);color:var(--dark-mute)}
+.copy-btn{align-self:flex-start;min-height:44px;padding:0 18px;border-radius:999px;border:1.5px solid var(--sea);background:none;color:var(--sea);font:700 15px var(--sans);cursor:pointer}
+.row-actions{display:flex;justify-content:center;gap:4px;flex-wrap:wrap}
+.small{margin:-8px 0 0;font-size:12px;line-height:1.5;color:var(--dark-mute);text-align:center}
+.fine{padding:22px 24px 34px;font-size:12px;line-height:1.5;color:var(--text-mute)}
+
+@media (prefers-reduced-motion:no-preference){ .step{animation:rise .28s ease-out} }
+@keyframes rise{from{transform:translateY(8px);opacity:.4}to{transform:none;opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="hero">
+    <img src="hero.jpg" alt="Ivan touching a glowing brain made of light">
+    <div class="fade"></div>
+    <div class="hero-text">
+      <div class="eyebrow">You commented BRAIN</div>
+      <h1 class="serif">What would your brain do first?</h1>
+      <p>Five quick questions about your business. At the end you see what we would build for you first, and a message to send me.</p>
+    </div>
+  </header>
+
+  <main class="sheet" id="sheet">
+    <div class="progress" id="progress">
+      <div class="row">
+        <span class="count" id="count">1 of 5</span>
+        <button class="back" id="back" type="button" hidden>&larr; Back</button>
+      </div>
+      <div class="bar" id="bar"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <div id="stage"></div>
+  </main>
+
+  <footer class="fine">Your answers stay on this page. Nothing is sent anywhere until you message me yourself.</footer>
+</div>
+
+<script>
+(function(){
+  var DM = "https://ig.me/m/twinsivan";
+
+  // Every build the page can promise. Each one is something the brain makes:
+  // a text it drafts, a file (sheet, PDF), a site, or a small tool. It never
+  // sends, posts or spends on its own; the owner does.
+  var ITEMS = {
+    // general
+    MAIL:{t:"Answering messages and emails", short:"your replies", h:"It drafts your replies",
+      p:"Messages and emails come out written in your voice. You read them and press send.",
+      how:"You paste in the message you got. It writes the answer. You check it and send.",
+      ex:{OTHER:"The question you answer ten times a week"}},
+    LIST:{t:"Keeping track of customers", short:"your customer list", h:"It keeps your customer list",
+      p:"Everyone in one place, kept up to date as you talk to it.",
+      how:"You tell it about a customer in plain words. It files it, and next time you open it, it tells you who is due.",
+      ex:{OTHER:"Everyone you work with, in one place"}},
+    PDF:{t:"Invoices, offers, PDFs", say:"invoices and PDFs", short:"your PDFs", h:"It makes your offers and PDFs",
+      p:"Invoices, offers and price sheets, laid out properly, ready to send.",
+      how:"You say who it's for and what goes in. It makes the file.",
+      ex:{OTHER:"The same look every time, with your name on it"}},
+    MEMO:{t:"Forgetting things", short:"the things you'd forget", h:"It keeps your promises list",
+      p:"The follow-up, the renewal, the thing you promised on Tuesday.",
+      how:"You tell it what you promised. When you open it in the morning, it lists what's still open.",
+      ex:{OTHER:"The follow-up you promised on Tuesday, waiting when you open it"}},
+
+    // café / restaurant
+    MENU:{t:"Menu and price changes", short:"your menu", h:"Your menu, always current",
+      p:"Change a dish or a price once. The menu file follows, and your website too if we built it together.",
+      how:"You tell it “the lasagne is 12 now”. It updates the menu. If we built your site, it updates that too, and you publish it.", ex:{}},
+    GROUPS:{t:"Group and event enquiries", short:"your enquiries", h:"It answers your enquiries",
+      p:"Group bookings, birthdays, catering questions. The replies come out written in your voice.",
+      how:"You paste in the enquiry. It writes the answer with your prices and rules. You send it.",
+      ex:{FOOD:"“Do you take a group of twelve on Friday?”"}},
+    SUPPLY:{t:"Supplier orders and stock", short:"your stock orders", h:"Your order list and stock sheet",
+      p:"One sheet with what you have and what to order.",
+      how:"You tell it what came in and what ran out. It updates the sheet and writes the order.", ex:{}},
+    SHIFTS:{t:"Staff shifts", short:"your staff rota", h:"Your weekly rota",
+      p:"The shift plan in Excel, redone in a minute when someone calls in sick.",
+      how:"You say who is off. It moves the shifts and gives you the new plan.", ex:{}},
+    REVIEWS:{t:"Replying to reviews", short:"your review replies", h:"It drafts your review replies",
+      p:"Short, kind, in your voice. The bad ones too.",
+      how:"You paste in the review. It writes the reply. You post it.", ex:{}},
+
+    // shop
+    PRODUCTS:{t:"Writing product descriptions", short:"your product texts", h:"Your product texts",
+      p:"Descriptions for your site or listings, all in one voice.",
+      how:"You tell it what the product is. It writes the text.", ex:{}},
+    STOCK:{t:"Keeping stock", short:"your stock sheet", h:"Your stock sheet",
+      p:"What you have, what sells, and what's running low.",
+      how:"You tell it what sold and what came in. It tells you what to reorder.", ex:{}},
+    QUESTIONS:{t:"Customer questions", short:"your customer replies", h:"It drafts your replies",
+      p:"Messages and emails come out written in your voice. You read them and press send.",
+      how:"You paste in the question. It writes the answer. You send it.",
+      ex:{SHOP:"“Is this still in stock?”"}},
+    NEWS:{t:"Offers and newsletters", short:"your newsletters", h:"Your offers and newsletters",
+      p:"Written in your voice, ready to send.",
+      how:"You say what's on offer. It writes it. You send it.", ex:{}},
+    INVOICE:{t:"Invoices", short:"your invoices", h:"Your invoices as PDFs",
+      p:"The same clean look every time, with your details on it.",
+      how:"You say who and how much. It makes the PDF.", ex:{}},
+
+    // service
+    BOOKINGS:{t:"Booking and rescheduling messages", short:"your booking messages", h:"It drafts your booking replies",
+      p:"Moves, cancellations and “do you have time on Thursday”, answered in your voice.",
+      how:"You paste in the message. It writes the answer. You send it.",
+      ex:{SERVICE:"“Can I move tomorrow's appointment?”"}},
+    QUOTES:{t:"Writing quotes", short:"your quotes", h:"Quotes from a few words",
+      p:"A clean PDF quote from what you tell it.",
+      how:"You say the job and the price. It makes the quote.", ex:{}},
+    HISTORY:{t:"Remembering each customer", short:"your customer history", h:"Your customer history",
+      p:"Who had what, when, and who is due next.",
+      how:"You tell it after each job. Next time you open it, it tells you who is due.", ex:{}},
+    REMIND:{t:"Reminding clients", short:"your client reminders", h:"It drafts your reminders",
+      p:"Friendly reminder texts, ready to send.",
+      how:"It lists who is due tomorrow and writes the message. You send it.", ex:{}},
+
+    // freelancer
+    PROPOSAL:{t:"Proposals and quotes", short:"your proposals", h:"Proposals from a call summary",
+      p:"A proper proposal, drafted from what the client told you.",
+      how:"You tell it what the client said. It drafts the proposal. You adjust and send.", ex:{}},
+    CHASE:{t:"Invoices and chasing payment", short:"your payment follow-ups", h:"Invoices, and the polite follow-up",
+      p:"The invoice as a PDF, and when it's late, the nudge.",
+      how:"It makes the invoice. When you tell it who hasn't paid, it drafts the polite reminder. You send it.",
+      ex:{SOLO:"A polite nudge on the invoice nobody paid"}},
+    TRACK:{t:"Keeping track of clients and projects", short:"your client tracker", h:"One tracker of what's open",
+      p:"Every client, every project, what's done and what's waiting.",
+      how:"You tell it what happened today. It keeps the list and tells you what's next.", ex:{}},
+    CONTRACT:{t:"Contracts", short:"your contracts", h:"Contracts from your template",
+      p:"Your own contract, filled in with the client's details, ready to sign.",
+      how:"You give it your template once. After that, it fills it in for each client.", ex:{}},
+
+    // getting more customers, for every business
+    SOCIAL:{t:"Instagram and social posts", say:"Instagram and social posts", short:"your Instagram", h:"Your Instagram, planned",
+      p:"Post ideas and captions in your voice, planned a month ahead.",
+      how:"You tell it what's happening this week. It writes the posts. You post them.",
+      ex:{FOOD:"Today's special, written and ready to post", SHOP:"New arrivals, one post a day", SERVICE:"A before and after, with the story behind it", SOLO:"Your work, told as short client stories", OTHER:"A month of posts you don't have to think up"}},
+    ADS:{t:"Ads that bring customers", say:"ads", short:"your ads", h:"Ads you test, not guess",
+      p:"Ad texts and a simple plan for what to test first. You bring back the numbers, it tells you what to keep.",
+      how:"You say who you want to reach. It writes a few versions to test. You set the budget and press go.",
+      ex:{OTHER:"Three versions of one ad, to see which one works"}},
+    WEB:{t:"A website", short:"your website", h:"Your website, built with you",
+      p:"We build it together and it's yours. Want the font changed later? You ask the brain, not a developer.",
+      how:"You describe what you want. It builds, you look, you say what to change.",
+      ex:{OTHER:"A clean site with your hours, prices and a way to reach you"}},
+    APP:{t:"An app or tool for my business", short:"a tool for your business", h:"A tool built for your business",
+      p:"Something small you wish existed, built with you, and yours to change.",
+      how:"You describe it. It builds it with you. You change it any time.",
+      ex:{FOOD:"A checklist for opening and closing", SHOP:"A price and margin calculator", SERVICE:"A price list you can print or send", SOLO:"A price calculator for your services", OTHER:"The small tool you've always wished for"}}
+  };
+
+  var TYPE = {
+    FOOD:["MENU","GROUPS","SUPPLY","SHIFTS","REVIEWS"],
+    SHOP:["PRODUCTS","STOCK","QUESTIONS","NEWS","INVOICE"],
+    SERVICE:["BOOKINGS","QUOTES","HISTORY","REMIND","INVOICE"],
+    SOLO:["PROPOSAL","CHASE","TRACK","CONTRACT"],
+    OTHER:["MAIL","LIST","PDF","MEMO"]
+  };
+  var GROW = ["SOCIAL","ADS","WEB","APP"];
+  // What each kind of business may already use. "Nothing yet" stands alone.
+  var HAVE = {
+    FOOD:[["SITE","A website"],["INSTA","An Instagram page"],["BOOKINGS","Online bookings"],["DELIVERY","Delivery apps"],["XLS","Excel"],["PAPER","Paper and notebooks"]],
+    SHOP:[["SITE","A website"],["STORE","An online shop"],["INSTA","An Instagram page"],["TILL","A till or card terminal system"],["XLS","Excel"],["PAPER","Paper and notebooks"]],
+    SERVICE:[["SITE","A website"],["INSTA","An Instagram page"],["BOOKAPP","A booking app"],["CAL","A calendar on my phone"],["XLS","Excel"],["PAPER","Paper and notebooks"]],
+    SOLO:[["SITE","A portfolio site"],["LINKEDIN","A LinkedIn profile"],["INSTA","An Instagram page"],["INVOICING","Invoicing software"],["XLS","Excel or Google Sheets"],["PAPER","Paper and notebooks"]],
+    OTHER:[["SITE","A website"],["INSTA","An Instagram page"],["APPS","An app for my business"],["XLS","Excel"],["PAPER","Paper and notebooks"]]
+  };
+  // The sheet each business gets when it still runs on paper.
+  var PAPER = {FOOD:"SUPPLY", SHOP:"STOCK", SERVICE:"HISTORY", SOLO:"TRACK", OTHER:"LIST"};
+
+  var Q = [
+    { id:"run", type:"single", title:"What do you run?",
+      options:[
+        {v:"SHOP", t:"A shop", s:"In person or online", say:"a shop"},
+        {v:"SERVICE", t:"A service", s:"Salon, repairs, cleaning, coaching", say:"a service business"},
+        {v:"FOOD", t:"A café or restaurant", say:"a café or restaurant"},
+        {v:"SOLO", t:"I freelance", s:"Design, writing, consulting", say:"my own freelance work"},
+        {v:"OTHER", t:"Something else", say:"something else, I'll explain"}
+      ]},
+    { id:"pain", type:"needs", title:"What eats your time?", hint:"Pick as many as you like." },
+    { id:"have", type:"have", title:"What do you already have?", hint:"Tap everything that applies." },
+    { id:"pc", type:"pair", title:"What do you work on?", hint:"The brain lives on a computer, so this matters.",
+      groups:[
+        {id:"device", label:"Your computer", options:[{v:"WIN",t:"Windows laptop or PC",say:"a Windows laptop or PC"},{v:"MAC",t:"A Mac",say:"a Mac"},{v:"PHONE",t:"Only a phone or tablet",say:"only a phone or tablet"}]},
+        {id:"skill", label:"How you use it", options:[{v:"BASIC",t:"Email and browsing",say:"email and browsing"},{v:"OFFICE",t:"Word and Excel too",say:"Word and Excel too"},{v:"PRO",t:"I install apps and sort my own files",say:"I install apps and sort my own files"}]}
+      ]},
+    { id:"ai", type:"single", title:"How much do you use AI today?",
+      options:[
+        {v:"NEVER", t:"Never tried it", say:"never tried it"},
+        {v:"FEW", t:"Tried ChatGPT or similar a few times", say:"tried it a few times"},
+        {v:"DAILY", t:"Most days", s:"For writing, questions, ideas", say:"most days, for writing and questions"},
+        {v:"PAY", t:"Every day, and I pay for it", say:"every day, and I pay for it"}
+      ]}
+  ];
+  var N = Q.length;
+
+  function optSay(list, v){ var o = list.filter(function(x){ return x.v===v; })[0]; return o ? (o.say || o.t) : ""; }
+  function qSay(qid, v){ return optSay(Q.filter(function(x){ return x.id===qid; })[0].options, v); }
+  function gSay(gid, v){
+    for (var i=0;i<Q.length;i++) if (Q[i].groups) for (var j=0;j<Q[i].groups.length;j++)
+      if (Q[i].groups[j].id===gid) return optSay(Q[i].groups[j].options, v);
+    return "";
+  }
+  function haveSay(){
+    if (A.have.indexOf("NONE")>-1) return "nothing yet";
+    return HAVE[A.run].filter(function(h){ return A.have.indexOf(h[0])>-1; })
+      .map(function(h){ return /^Excel/.test(h[1]) ? h[1] : lower(h[1]); }).join(", ");
+  }
+  function exFor(k){ var e = ITEMS[k].ex; return e[A.run] || e.OTHER || ""; }
+  function lower(t){ return t.charAt(0).toLowerCase() + t.slice(1); }
+  function joinAnd(a){ return a.length > 1 ? a.slice(0,-1).join(", ") + " and " + a[a.length-1] : (a[0] || ""); }
+
+  function fresh(){ return { run:null, pain:[], have:[], device:null, skill:null, ai:null }; }
+  var A = fresh();
+  var step = 0;
+  var stage = document.getElementById("stage");
+  var countEl = document.getElementById("count");
+  var backEl = document.getElementById("back");
+  var bars = document.getElementById("bar").children;
+  var progress = document.getElementById("progress");
+
+  function el(tag, cls, txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; }
+  function go(n, fromHistory){
+    step = n;
+    if (!fromHistory) { try { history.pushState({s:n}, ""); } catch(e){} }
+    render(); scrollSheet();
+    var h = stage.querySelector("h2"); if (h) { h.tabIndex = -1; try { h.focus({preventScroll:true}); } catch(e){} }
+  }
+
+  function optButton(o, pressed, multi, onTap, idp){
+    var b = el("button", "opt" + (multi ? " multi" : ""));
+    b.type = "button"; b.id = idp + "-" + o.v.toLowerCase();
+    b.setAttribute("aria-pressed", pressed ? "true" : "false");
+    var span = el("span"); span.appendChild(document.createTextNode(o.t));
+    if (o.s) span.appendChild(el("small", null, o.s));
+    b.appendChild(span); b.appendChild(el("span","mark"));
+    b.addEventListener("click", onTap);
+    return b;
+  }
+
+  function render(){
+    stage.innerHTML = "";
+    if (step >= N) { renderResult(); return; }
+    progress.hidden = false;
+    countEl.textContent = (step+1) + " of " + N;
+    backEl.hidden = step === 0;
+    for (var i=0;i<bars.length;i++) bars[i].className = i<=step ? "on" : "";
+
+    var q = Q[step];
+    var wrap = el("section","step");
+    wrap.appendChild(el("h2","serif",q.title));
+    if (q.hint) wrap.appendChild(el("p","hint",q.hint));
+
+    if (q.type === "single") {
+      var list = el("div","options");
+      q.options.forEach(function(o){
+        list.appendChild(optButton(o, A[q.id]===o.v, false, function(){
+          if (q.id==="run" && A.run!==o.v) { A.pain = []; A.have = []; }   // a new business type gets its own lists
+          A[q.id] = o.v; go(step+1);
+        }, q.id));
+      });
+      wrap.appendChild(list);
+    }
+
+    if (q.type === "needs") {
+      var next = el("button","cta","Next"); next.type="button"; next.id="next-pain";
+      var sync = function(){ next.disabled = A.pain.length===0; };
+      var toggle = function(k, b){
+        var i = A.pain.indexOf(k);
+        if (i>-1) A.pain.splice(i,1); else A.pain.push(k);
+        b.setAttribute("aria-pressed", A.pain.indexOf(k)>-1 ? "true" : "false");
+        sync();
+      };
+      var list2 = el("div","options");
+      TYPE[A.run].forEach(function(k){
+        var b = optButton({v:k, t:ITEMS[k].t}, A.pain.indexOf(k)>-1, true, function(){ toggle(k,b); }, "pain");
+        list2.appendChild(b);
+      });
+      wrap.appendChild(list2);
+      wrap.appendChild(el("div","group-label","Getting more customers"));
+      var pills = el("div","pills"); pills.setAttribute("role","group"); pills.setAttribute("aria-label","Getting more customers");
+      GROW.forEach(function(k){
+        var b = optButton({v:k, t:ITEMS[k].t}, A.pain.indexOf(k)>-1, true, function(){ toggle(k,b); }, "grow");
+        pills.appendChild(b);
+      });
+      wrap.appendChild(pills);
+      next.addEventListener("click", function(){ go(step+1); });
+      sync();
+      wrap.appendChild(next);
+    }
+
+    if (q.type === "have") {
+      var next3 = el("button","cta","Next"); next3.type="button"; next3.id="next-have";
+      var hp = el("div","pills"); hp.setAttribute("role","group"); hp.setAttribute("aria-label","What you already have");
+      var hbtns = {};
+      var sync3 = function(){
+        Object.keys(hbtns).forEach(function(v){ hbtns[v].setAttribute("aria-pressed", A.have.indexOf(v)>-1 ? "true" : "false"); });
+        next3.disabled = A.have.length===0;
+      };
+      HAVE[A.run].concat([["NONE","Nothing yet"]]).forEach(function(h){
+        var v = h[0];
+        hbtns[v] = optButton({v:v, t:h[1]}, false, true, function(){
+          if (v==="NONE") A.have = A.have.indexOf("NONE")>-1 ? [] : ["NONE"];
+          else {
+            A.have = A.have.filter(function(x){ return x!=="NONE"; });
+            var i = A.have.indexOf(v); if (i>-1) A.have.splice(i,1); else A.have.push(v);
+          }
+          sync3();
+        }, "have");
+        hp.appendChild(hbtns[v]);
+      });
+      wrap.appendChild(hp);
+      next3.addEventListener("click", function(){ go(step+1); });
+      sync3();
+      wrap.appendChild(next3);
+    }
+
+    if (q.type === "pair") {
+      var next2 = el("button","cta","Next"); next2.type="button"; next2.id="next-"+q.id;
+      var sync2 = function(){ next2.disabled = !q.groups.every(function(g){ return A[g.id]; }); };
+      q.groups.forEach(function(g){
+        wrap.appendChild(el("div","group-label",g.label));
+        var pl = el("div","pills"); pl.setAttribute("role","group"); pl.setAttribute("aria-label",g.label);
+        var btns = [];
+        g.options.forEach(function(o){
+          var b = optButton(o, A[g.id]===o.v, false, function(){
+            A[g.id] = o.v;
+            btns.forEach(function(x){ x.setAttribute("aria-pressed", x===b ? "true" : "false"); });
+            sync2();
+          }, g.id);
+          btns.push(b); pl.appendChild(b);
+        });
+        wrap.appendChild(pl);
+      });
+      next2.addEventListener("click", function(){ go(step+1); });
+      sync2();
+      wrap.appendChild(next2);
+    }
+    stage.appendChild(wrap);
+  }
+
+  // What they picked comes first, in the order the page showed it; what their
+  // answers to question 3 suggest comes after.
+  function pick(){
+    var order = TYPE[A.run].concat(GROW);
+    var picked = order.filter(function(k){ return A.pain.indexOf(k)>-1; });
+    var has = function(v){ return A.have.indexOf(v)>-1; };
+    var hinted = [];
+    if (!has("SITE") && !has("STORE")) hinted.push("WEB");
+    if (has("PAPER") || has("NONE")) hinted.push(PAPER[A.run]);
+    if (!has("INSTA")) hinted.push("SOCIAL");
+    return picked.concat(hinted.filter(function(k){ return picked.indexOf(k)<0; }));
+  }
+
+  function startText(){
+    return [
+      {WIN:"Your Windows computer is where the brain lives. No new computer needed.",
+       MAC:"Your Mac is where the brain lives. No new computer needed.",
+       PHONE:"The brain lives on a computer, not on a phone. For a business that is serious about this, you'll want a laptop. A basic Windows laptop or a Mac is enough."}[A.device],
+      {BASIC:"Email and browsing is enough. I install it and set it up with you on a shared screen. After that you type to it like a chat, in plain words.",
+       OFFICE:"If you use Word and Excel, you'll feel at home. It makes those files for you.",
+       PRO:"You'll move fast. We can go further in the first session."}[A.skill],
+      {NEVER:"Never used AI is a fine place to start. There are no habits to unlearn, and you'll learn the few things you say to it every day.",
+       FEW:"You've tried chat AI. The difference here: it remembers your business from one day to the next, and it works on your own files.",
+       DAILY:"You already use AI most days. This is the same kind of help, except it knows your business and keeps what it learns.",
+       PAY:"You already pay for AI. If it's a Claude plan, it may already cover what the brain runs on. If it's ChatGPT, the brain needs a Claude plan instead."}[A.ai]
+    ];
+  }
+
+  function message(chosen){
+    var inOrder = TYPE[A.run].concat(GROW).filter(function(k){ return A.pain.indexOf(k)>-1; });
+    var work = inOrder.filter(function(k){ return GROW.indexOf(k)<0; }).map(function(k){ return ITEMS[k].say || lower(ITEMS[k].t); });
+    var grow = inOrder.filter(function(k){ return GROW.indexOf(k)>-1; }).map(function(k){ return ITEMS[k].say || lower(ITEMS[k].t); });
+    var lines = ["Hi Ivan! I did the BRAIN questions.", "", "I run: " + qSay("run", A.run)];
+    if (work.length) lines.push("My time goes to: " + work.join(", "));
+    if (grow.length) lines.push("For more customers: " + grow.join(", "));
+    lines.push(
+      "I already have: " + haveSay(),
+      "Computer: " + gSay("device", A.device),
+      "Comfort: " + gSay("skill", A.skill),
+      "AI today: " + qSay("ai", A.ai),
+      "",
+      "What would you build for me first?"
+    );
+    return { text: lines.join("\n"), ref: ["BRAIN", A.run].concat(chosen.slice(0,3)).join("-") };
+  }
+
+  function renderResult(){
+    progress.hidden = true;
+    var chosen = pick();
+    var first = chosen.slice(0,3), rest = chosen.slice(3);
+
+    var r = el("section","step result");
+    var eb = el("div","eyebrow","Your answers"); eb.style.color="var(--sea)"; r.appendChild(eb);
+    r.appendChild(el("h2","serif","Where your brain would start."));
+    r.appendChild(el("p","para","Built from your answers. The real plan comes from our conversation, but this is where it would start."));
+
+    var cards = el("div","cards");
+    first.forEach(function(k,i){
+      var b = ITEMS[k], c = el("article","card");
+      c.appendChild(el("div","n", (i+1) + " · " + (i===0 ? "First" : i===1 ? "Then" : "After that")));
+      c.appendChild(el("h3",null,b.h));
+      c.appendChild(el("p",null,b.p));
+      var how = el("p","how"); how.appendChild(el("b",null,"How it works: ")); how.appendChild(document.createTextNode(b.how));
+      c.appendChild(how);
+      var e = exFor(k); if (e) c.appendChild(el("p","ex", (e.charAt(0)==="“" ? "For example: " : "") + e));
+      cards.appendChild(c);
+    });
+    r.appendChild(cards);
+    r.appendChild(el("p","para","In our session we build the first one together. The rest you build with the brain afterwards, in plain words. Questions in the first weeks come to my DM."));
+
+    if (rest.length) {
+      r.appendChild(el("p","later","Next in line: " + joinAnd(rest.map(function(k){ return ITEMS[k].short; })) + "."));
+    } else {
+      var more = TYPE[A.run].concat(GROW).filter(function(k){ return chosen.indexOf(k)<0; }).slice(0,3);
+      if (more.length) r.appendChild(el("p","later","The same brain can also take on " + joinAnd(more.map(function(k){ return ITEMS[k].short; })) + "."));
+    }
+
+    r.appendChild(el("h2","part","Where you start"));
+    startText().forEach(function(t){ r.appendChild(el("p","para",t)); });
+    r.appendChild(el("p","para","Not included: hosting, a domain, ad spend, and your own Claude subscription (Claude Pro, 20 USD a month before tax)."));
+
+    r.appendChild(el("h2","part","How it goes"));
+    var ol = el("ol","steps");
+    ["You send me the message below.",
+     "I ask you questions about your business. You answer in your own words; voice notes are fine.",
+     A.device==="PHONE"
+       ? "Once you have a laptop, we meet once, on a shared screen. The brain goes onto it and starts on your first build while you watch. Then it is yours."
+       : "We meet once, on a shared screen. The brain goes onto your computer and starts on your first build while you watch. Then it is yours."
+    ].forEach(function(t){ var li = el("li"); li.appendChild(el("span",null,t)); ol.appendChild(li); });
+    r.appendChild(ol);
+
+    var m = message(chosen);
+    var box = el("div","msg-box");
+    box.appendChild(el("div","lbl","Your message to me. Copy it, open the DM, paste and send. I'll answer you myself and tell you what it costs for your business."));
+    var pre = el("p","msg"); pre.id="dm-message";
+    pre.appendChild(document.createTextNode(m.text + "\n"));
+    pre.appendChild(el("span","ref",m.ref));
+    box.appendChild(pre);
+    var copy = el("button","copy-btn","Copy message"); copy.type="button"; copy.id="copy-message";
+    copy.addEventListener("click", function(){
+      var txt = m.text + "\n" + m.ref;
+      function done(){ copy.textContent = "Copied"; setTimeout(function(){ copy.textContent="Copy message"; }, 2000); }
+      function fallback(){
+        var s = window.getSelection(), rg = document.createRange();
+        rg.selectNodeContents(pre); s.removeAllRanges(); s.addRange(rg);
+        copy.textContent = "Selected, copy it";
+      }
+      try { navigator.clipboard.writeText(txt).then(done, fallback); } catch(e){ fallback(); }
+    });
+    box.appendChild(copy);
+    r.appendChild(box);
+
+    var dm = el("a","cta","Open my DM"); dm.href = DM; dm.target="_blank"; dm.rel="noopener"; dm.id="open-dm";
+    r.appendChild(dm);
+    r.appendChild(el("p","small","Opens Instagram. Paste the message and send."));
+
+    var actions = el("div","row-actions");
+    var edit = el("button","ghost","Edit my answers"); edit.type="button"; edit.id="edit-answers";
+    edit.addEventListener("click", function(){ go(N-1); });
+    var again = el("button","ghost","Start over"); again.type="button"; again.id="start-over";
+    again.addEventListener("click", function(){ A = fresh(); go(0); });
+    actions.appendChild(edit); actions.appendChild(again);
+    r.appendChild(actions);
+
+    stage.appendChild(r);
+  }
+
+  function scrollSheet(){
+    var s = document.getElementById("sheet");
+    if (s.getBoundingClientRect().top < 0) s.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+
+  backEl.addEventListener("click", function(){ if (step>0) go(step-1); });
+  try { history.replaceState({s:0}, ""); } catch(e){}
+  window.addEventListener("popstate", function(e){
+    var s2 = (e.state && typeof e.state.s === "number") ? e.state.s : 0;
+    if (s2 > 0 && !A.run) s2 = 0;
+    go(s2, true);
+  });
+  render();
+})();
+</script>
+
+</body>
+</html>

@@ -7,7 +7,8 @@ One folder per post. Every file here was approved before it was pushed.
 
 - `20260916-the-film/` — the intro film, published 2026-09-14.
 - `privacy/` — the Meta app's privacy policy page.
-- `jarvis/` — the page a "comment JARVIS" reply links to: `index.html`, its one image `hero.jpg`, and the free PDF `what-i-learned-building-with-ai.pdf`.
+- `jarvis/` — the first reply page: `index.html`, its one image `hero.jpg`, and the free PDF `what-i-learned-building-with-ai.pdf`. Kept up for links already sent in DMs.
+- `brain/` — the page a "comment BRAIN" or "comment JARVIS" reply links to: five questions, what a brain would build first, and a message to send in DM. `index.html` and its one image `hero.jpg`. No price, ever.
 
 ## Naming going forward
 
