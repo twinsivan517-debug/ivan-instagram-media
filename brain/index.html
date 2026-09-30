@@ -128,7 +128,6 @@ a{color:var(--sky)}
 
 <script>
 (function(){
-  var DM = "https://ig.me/m/twinsivan";
 
   // Every build the page can promise. Each one is something the brain makes:
   // a text it drafts, a file (sheet, PDF), a site, or a small tool. It never
@@ -520,15 +519,15 @@ a{color:var(--sky)}
 
     var m = message(chosen);
     var box = el("div","msg-box");
-    box.appendChild(el("div","lbl","Your message to me. Copy it, open the DM, paste and send. I'll answer you myself and tell you what it costs for your business."));
+    box.appendChild(el("div","lbl","Your message to me. I'll answer you myself and tell you what it costs for your business."));
     var pre = el("p","msg"); pre.id="dm-message";
     pre.appendChild(document.createTextNode(m.text + "\n"));
     pre.appendChild(el("span","ref",m.ref));
     box.appendChild(pre);
-    var copy = el("button","copy-btn","Copy message"); copy.type="button"; copy.id="copy-message";
+    var copy = el("button","cta","Copy my message"); copy.type="button"; copy.id="copy-message";
     copy.addEventListener("click", function(){
       var txt = m.text + "\n" + m.ref;
-      function done(){ copy.textContent = "Copied"; setTimeout(function(){ copy.textContent="Copy message"; }, 2000); }
+      function done(){ copy.textContent = "Copied ✓"; setTimeout(function(){ copy.textContent="Copy my message"; }, 2500); }
       function fallback(){
         var s = window.getSelection(), rg = document.createRange();
         rg.selectNodeContents(pre); s.removeAllRanges(); s.addRange(rg);
@@ -536,12 +535,18 @@ a{color:var(--sky)}
       }
       try { navigator.clipboard.writeText(txt).then(done, fallback); } catch(e){ fallback(); }
     });
-    box.appendChild(copy);
     r.appendChild(box);
+    r.appendChild(copy);
 
-    var dm = el("a","cta","Open my DM"); dm.href = DM; dm.target="_blank"; dm.rel="noopener"; dm.id="open-dm";
-    r.appendChild(dm);
-    r.appendChild(el("p","small","Opens Instagram. Paste the message and send."));
+    // No DM button: Instagram's own browser opens an Instagram link as a blank page.
+    // People here came from the DM, and closing this page puts them back in it.
+    var next = el("ol","steps");
+    ["Tap Copy my message.",
+     "Close this page with the ✕ at the top. You're back in our chat.",
+     "Paste it and send."
+    ].forEach(function(t){ var li = el("li"); li.appendChild(el("span",null,t)); next.appendChild(li); });
+    r.appendChild(next);
+    r.appendChild(el("p","small","Not in Instagram? Send it to @twinsivan on Instagram."));
 
     var actions = el("div","row-actions");
     var edit = el("button","ghost","Edit my answers"); edit.type="button"; edit.id="edit-answers";
